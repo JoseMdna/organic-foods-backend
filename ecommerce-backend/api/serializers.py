@@ -8,7 +8,10 @@ class CategorySerializer(serializers.ModelSerializer):
 
 class ProductSerializer(serializers.ModelSerializer):
     category = CategorySerializer(read_only=True)
+    category_id = serializers.IntegerField(write_only=True)
+    created_by = serializers.ReadOnlyField(source='created_by.username')
 
     class Meta:
         model = Product
-        fields = '__all__'
+        fields = ['id', 'name', 'description', 'price', 'availability', 
+                 'category', 'category_id', 'image_url', 'created_by']
