@@ -2,9 +2,10 @@ from rest_framework import serializers
 from .models import Product, Category, Nutrition
 
 class CategorySerializer(serializers.ModelSerializer):
+    created_by = serializers.ReadOnlyField(source='created_by.username')
     class Meta:
         model = Category
-        fields = '__all__'
+        fields = ['id', 'name', 'created_by']
 
 class NutritionSerializer(serializers.ModelSerializer):
     class Meta:
@@ -16,7 +17,6 @@ class ProductSerializer(serializers.ModelSerializer):
     category_id = serializers.IntegerField(write_only=True)
     created_by = serializers.ReadOnlyField(source='created_by.username')
     nutrition = NutritionSerializer()
-
     class Meta:
         model = Product
         fields = ['id', 'name', 'description', 'price', 'availability', 
@@ -26,13 +26,10 @@ class ProductSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         category_id = validated_data.pop('category_id')
         nutrition_data = validated_data.pop('nutrition', None)
-        
         category = Category.objects.get(id=category_id)
-        
         nutrition = None
         if nutrition_data:
             nutrition = Nutrition.objects.create(**nutrition_data)
-        
         product = Product.objects.create(
             category=category,
             nutrition=nutrition,
@@ -50,9 +47,7 @@ class ProductSerializer(serializers.ModelSerializer):
             else:
                 nutrition = Nutrition.objects.create(**nutrition_data)
                 instance.nutrition = nutrition
-        
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
-        
         instance.save()
         return instance
