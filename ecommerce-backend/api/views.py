@@ -1,8 +1,9 @@
 from rest_framework import generics, permissions
 from rest_framework.permissions import BasePermission
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
-from .models import Product, Category
-from .serializers import ProductSerializer, CategorySerializer
+from .models import Product, Category, Recipe
+from .serializers import ProductSerializer, CategorySerializer, RecipeSerializer
+
 
 class IsOwnerOrReadOnly(BasePermission):
     def has_object_permission(self, request, view, obj):
@@ -41,3 +42,16 @@ class CategoryDetail(generics.RetrieveUpdateDestroyAPIView):
         if self.request.method in ['PUT', 'PATCH', 'DELETE']:
             return [permissions.IsAuthenticated(), IsOwnerOrReadOnly()]
         return [IsAuthenticatedOrReadOnly()]
+    
+class RecipeList(generics.ListCreateAPIView):
+    queryset = Recipe.objects.all()
+    serializer_class = RecipeSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    
+    def perform_create(self, serializer):
+        serializer.save(created_by=self.request.user)
+
+class RecipeDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Recipe.objects.all()
+    serializer_class = RecipeSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
