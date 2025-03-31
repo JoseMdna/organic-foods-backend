@@ -63,7 +63,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
-    "https://glistening-hamster-238910.netlify.app/",
+    "https://glistening-hamster-238910.netlify.app",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
