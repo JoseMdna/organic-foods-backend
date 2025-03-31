@@ -1,7 +1,3 @@
-"""
-WSGI config for backend project.
-"""
-
 import os
 from dotenv import load_dotenv
 

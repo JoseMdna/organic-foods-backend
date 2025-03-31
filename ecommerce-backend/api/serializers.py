@@ -22,13 +22,13 @@ class ProductSerializer(serializers.ModelSerializer):
     glutenFree = serializers.BooleanField(default=False)
     local = serializers.BooleanField(default=False)
     
-class Meta:
-    model = Product
-    fields = ['id', 'name', 'description', 'price', 'availability', 
-             'category', 'category_id', 'image_url', 'created_by',
-             'organic', 'vegan', 'glutenFree', 'local', 'nutrition', 'sourcing']
+    class Meta:
+        model = Product
+        fields = ['id', 'name', 'description', 'price', 'availability', 
+                 'category', 'category_id', 'image_url', 'created_by',
+                 'organic', 'vegan', 'glutenFree', 'local', 'nutrition', 'sourcing']
     
-def to_representation(self, instance):
+    def to_representation(self, instance):
         representation = super().to_representation(instance)        
         representation['name'] = representation.get('name') or "Unnamed Product"
         representation['description'] = representation.get('description') or ""
@@ -41,7 +41,7 @@ def to_representation(self, instance):
         
         return representation      
     
-def create(self, validated_data):
+    def create(self, validated_data):
         category_id = validated_data.pop('category_id')
         nutrition_data = validated_data.pop('nutrition', None)
         category = Category.objects.get(id=category_id)
@@ -55,7 +55,7 @@ def create(self, validated_data):
         )
         return product
     
-def update(self, instance, validated_data):
+    def update(self, instance, validated_data):
         nutrition_data = validated_data.pop('nutrition', None)
         if nutrition_data:
             if instance.nutrition:

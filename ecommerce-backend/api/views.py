@@ -1,9 +1,8 @@
-from rest_framework import generics, permissions
-from rest_framework.permissions import BasePermission
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework import generics, permissions, status
+from rest_framework.permissions import BasePermission, IsAuthenticatedOrReadOnly
+from rest_framework.response import Response
 from .models import Product, Category, Recipe
 from .serializers import ProductSerializer, CategorySerializer, RecipeSerializer
-
 
 class IsOwnerOrReadOnly(BasePermission):
     def has_object_permission(self, request, view, obj):
@@ -50,6 +49,19 @@ class RecipeList(generics.ListCreateAPIView):
     
     def perform_create(self, serializer):
         serializer.save(created_by=self.request.user)
+    
+    def create(self, request, *args, **kwargs):
+        try:
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            self.perform_create(serializer)
+            headers = self.get_success_headers(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        except Exception as e:
+            return Response(
+                {"error": str(e)}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
 class RecipeDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Recipe.objects.all()
