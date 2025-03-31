@@ -8,7 +8,8 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'default-insecure-key-for-dev')
 
 DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.herokuapp.com']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.onrender.com']
+CSRF_TRUSTED_ORIGINS = ['https://*.onrender.com', 'http://localhost:3000']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
