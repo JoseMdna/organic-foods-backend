@@ -63,7 +63,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
-    "https://glistening-hamster-238910.netlify.app",
+    "glistening-hamster-238910.netlify.app",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
@@ -133,7 +133,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CSRF_COOKIE_SAMESITE = 'Lax'  
 CSRF_COOKIE_HTTPONLY = False  
-CSRF_TRUSTED_ORIGINS = ['https://*.herokuapp.com', 'http://localhost:3000']
+CSRF_TRUSTED_ORIGINS = ['glistening-hamster-238910.netlify.app', 'http://localhost:3000']
 
 SESSION_COOKIE_SAMESITE = 'Lax'
 SESSION_COOKIE_SECURE = False
