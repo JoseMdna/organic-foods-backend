@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: organic-foods-api
+    env: python
+    plan: free
+    buildCommand: ./build.sh
+    startCommand: cd ecommerce-backend && gunicorn config.wsgi:application
+    envVars:
+      - key: DJANGO_SECRET_KEY
+        generateValue: true
+      - key: DJANGO_DEBUG
+        value: False
+      - key: DATABASE_URL
+        fromDatabase:
+          name: organic-foods-db
+          property: connectionString
+
+databases:
+  - name: organic-foods-db
+    plan: free
