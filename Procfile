@@ -1,0 +1,1 @@
+web: cd ecommerce-backend && gunicorn config.wsgi --log-file -

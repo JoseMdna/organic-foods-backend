@@ -8,8 +8,8 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'default-insecure-key-for-dev')
 
 DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.onrender.com']
-CSRF_TRUSTED_ORIGINS = ['https://*.onrender.com', 'http://localhost:3000']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.herokuapp.com']
+CSRF_TRUSTED_ORIGINS = ['https://*.herokuapp.com', 'https://glistening-hamster-238910.netlify.app']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -19,6 +19,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework.authtoken', 
     'corsheaders',
     'api',
 ]

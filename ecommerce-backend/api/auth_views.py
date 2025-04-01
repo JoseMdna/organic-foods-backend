@@ -1,9 +1,10 @@
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.authtoken.models import Token
 
 class RegisterView(APIView):
     permission_classes = [AllowAny]
@@ -25,10 +26,11 @@ class RegisterView(APIView):
             )
         
         user = User.objects.create_user(username=username, password=password)
-        login(request, user)
+        token, _ = Token.objects.get_or_create(user=user)
         
         return Response({
             'success': True,
+            'token': token.key,
             'user': {
                 'id': user.id,
                 'username': user.username,
@@ -46,9 +48,10 @@ class LoginView(APIView):
         user = authenticate(username=username, password=password)
         
         if user is not None:
-            login(request, user)
+            token, _ = Token.objects.get_or_create(user=user)
             return Response({
                 'success': True,
+                'token': token.key,
                 'user': {
                     'id': user.id,
                     'username': user.username,
@@ -65,7 +68,7 @@ class LogoutView(APIView):
     permission_classes = [IsAuthenticated]
     
     def post(self, request):
-        logout(request)
+        request.user.auth_token.delete()
         return Response({'success': True})
 
 class UserInfoView(APIView):
