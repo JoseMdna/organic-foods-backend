@@ -9,7 +9,6 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'default-insecure-key-for-dev')
 DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.herokuapp.com']
-CSRF_TRUSTED_ORIGINS = ['https://*.herokuapp.com', 'https://glistening-hamster-238910.netlify.app']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -62,10 +61,13 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
+CORS_ALLOW_ALL_ORIGINS = True
+
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "https://glistening-hamster-238910.netlify.app"
 ]
+
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_METHODS = [
     "DELETE",
@@ -134,6 +136,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CSRF_COOKIE_SAMESITE = 'Lax'  
 CSRF_COOKIE_HTTPONLY = False  
 CSRF_TRUSTED_ORIGINS = [
+"https://*.herokuapp.com", 
 "https://glistening-hamster-238910.netlify.app"
 ]
 
